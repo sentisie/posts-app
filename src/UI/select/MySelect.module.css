@@ -1,0 +1,9 @@
+.select {
+  width: 140px;
+  padding: 10px 15px;
+  border: 1px solid rgb(0, 128, 128);
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=MySelect.module.css.map */
