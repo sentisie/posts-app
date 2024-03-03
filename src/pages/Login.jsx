@@ -13,7 +13,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: '160px' }}>
       <h1 style={{ marginBottom: '20px' }}>Login in to app</h1>
       <form onSubmit={login}>
         <article
