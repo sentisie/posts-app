@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import MyButton from '../UI/button/MyButton';
 import { useNavigate } from 'react-router-dom';
+import { IPost } from '../types/types';
 
-const PostItem = ({ post, remove }) => {
+interface PostProps {
+  post: IPost;
+  remove: (post: IPost) => void;
+}
+
+const PostItem: FC<PostProps> = ({ post, remove }) => {
   const router = useNavigate();
   return (
     <div className="post">
@@ -13,8 +19,10 @@ const PostItem = ({ post, remove }) => {
         <div>{post.body}</div>
       </div>
       <div className="post__btns">
-        <MyButton onClick={() => router(`/posts/${post.id}`)}>Open</MyButton>
-        <MyButton onClick={() => remove(post)}>Delete</MyButton>
+        <MyButton onClick={(): void => router(`/posts/${post.id}`)}>
+          Open
+        </MyButton>
+        <MyButton onClick={(): void => remove(post)}>Delete</MyButton>
       </div>
     </div>
   );

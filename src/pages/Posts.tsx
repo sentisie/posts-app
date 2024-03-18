@@ -12,23 +12,26 @@ import PostForm from '../components/PostForm';
 import Pagination from '../UI/pagination/Pagination';
 import { useObserver } from '../hooks/useObserver';
 import MySelect from '../UI/select/MySelect';
+import { IPost } from '../types/types';
 
 function Posts() {
-  //Массив с данными
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState({ sort: '', query: '' });
-  const [modal, setModal] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const [filter, setFilter] = useState<{ sort: string; query: string }>({
+    sort: '',
+    query: '',
+  });
+  const [modal, setModal] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [limit, setLimit] = useState<string>('10');
+  const [page, setPage] = useState<number>(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-  const lastElement = useRef();
+  const lastElement = useRef<HTMLDivElement | null>(null);
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-    const response = await PostService.getAll(limit, page);
+    const response = await PostService.getAll(+limit, page);
     setPosts([...posts, ...response.data]);
     const totalCount = response.headers['x-total-count'];
-    setTotalPages(getPageCount(totalCount, limit));
+    setTotalPages(getPageCount(+totalCount, +limit)); // Преобразуем totalCount и limit в числа
   });
 
   useObserver(lastElement, page < totalPages, isPostsLoading, () => {
@@ -36,19 +39,19 @@ function Posts() {
   });
 
   useEffect(() => {
-    fetchPosts(limit, page);
+    fetchPosts(+limit, page); // Преобразуем limit в число
   }, [page, limit]);
 
-  const createPostHandler = (newPost) => {
+  const createPostHandler = (newPost: IPost): void => {
     setPosts([...posts, newPost]);
     setModal(false);
   };
 
-  const removePostHandler = (newPost) => {
+  const removePostHandler = (newPost: IPost): void => {
     setPosts(posts.filter((post) => post.id !== newPost.id));
   };
 
-  const changePage = (page) => {
+  const changePage = (page: number): void => {
     setPage(page);
   };
 
@@ -63,10 +66,10 @@ function Posts() {
             onChange={(value) => setLimit(value)}
             defaultValue={'Number of posts'}
             options={[
-              { value: 5, name: '5' },
-              { value: 10, name: '10' },
-              { value: 25, name: '25' },
-              { value: -1, name: 'All' },
+              { value: '5', name: '5' },
+              { value: '10', name: '10' },
+              { value: '25', name: '25' },
+              { value: '-1', name: 'All' },
             ]}
           />
         </div>
@@ -76,7 +79,8 @@ function Posts() {
         </MyModal>
       </section>
       {/*display-posts*/}
-      {postError && <h1>An error occured ${postError}</h1>}
+      {postError && <h1>An error occurred {postError}</h1>}{' '}
+      {/* Исправим шаблонную строку */}
       <PostList
         remove={removePostHandler}
         posts={sortedAndSearchedPosts}

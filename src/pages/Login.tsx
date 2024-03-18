@@ -6,7 +6,7 @@ import { AuthContext } from '../context';
 const Login = () => {
   const { isAuth, setIsAuth } = useContext(AuthContext);
 
-  const login = (event) => {
+  const login = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsAuth(true);
     localStorage.setItem('auth', 'true');

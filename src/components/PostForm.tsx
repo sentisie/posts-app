@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import MyInput from '../UI/input/MyInput';
 import MyButton from '../UI/button/MyButton';
 
-const PostForm = ({ onCreatePost }) => {
-  //Состояния элементов Названия и Описания
+interface Post {
+  id: number;
+  title: string;
+  body: string;
+}
+
+interface PostFormProps {
+  onCreatePost: (newPost: Post) => void;
+}
+
+const PostForm: FC<PostFormProps> = ({ onCreatePost }) => {
   const [post, setPost] = useState({ title: '', body: '' });
   const [uniqueId, setUniqueId] = useState(101);
 
-  //Обработчики для сохранения состояния событий
-  const inputTitleChangeHandler = (event) =>
-    setPost({ ...post, title: event.target.value });
+  const inputTitleChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => setPost({ ...post, title: event.target.value });
 
-  const inputBodyChangeHandler = (event) =>
-    setPost({ ...post, body: event.target.value });
+  const inputBodyChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => setPost({ ...post, body: event.target.value });
 
-  //Обработчик по добавлению нового поста
-  const addPostHandler = (event) => {
+  const addPostHandler = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     setUniqueId((prevId) => prevId + 1);
     const newPost = {

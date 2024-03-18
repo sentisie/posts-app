@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { FC } from 'react';
 import MySelect from '../UI/select/MySelect';
 import MyInput from '../UI/input/MyInput';
 
-const PostFilter = ({ filter, setFilter }) => {
+export interface PostFilterProps {
+  filter: {
+    query: string;
+    sort: string;
+  };
+  setFilter: (filter: { query: string; sort: string }) => void;
+}
+
+const PostFilter: FC<PostFilterProps> = ({ filter, setFilter }) => {
   return (
     <div>
       <MyInput
         value={filter.query}
-        onChange={(event) =>
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setFilter({ ...filter, query: event.target.value })
         }
         placeholder="Search"
@@ -15,7 +23,7 @@ const PostFilter = ({ filter, setFilter }) => {
       />
       <MySelect
         value={filter.sort}
-        onChange={(selectedSort) =>
+        onChange={(selectedSort: string) =>
           setFilter({ ...filter, sort: selectedSort })
         }
         defaultValue={'Filter'}

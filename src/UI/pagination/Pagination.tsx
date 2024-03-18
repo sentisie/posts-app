@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { usePagination } from '../../hooks/usePagination';
 
-const Pagination = ({ totalPages, page, changePage }) => {
-  let pagesArray = usePagination(totalPages);
+interface PaginationProps {
+  totalPages: number;
+  page: number;
+  changePage: (page: number) => void;
+}
+
+const Pagination: FC<PaginationProps> = ({ totalPages, page, changePage }) => {
+  let pagesArray: number[] = usePagination(totalPages);
   return (
     <section className="page-wrapper">
-      {pagesArray.map((p) => (
+      {pagesArray.map((p: number) => (
         <span
           onClick={() => changePage(p)}
           key={p}
