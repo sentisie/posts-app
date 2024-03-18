@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetching } from '../hooks/useFetching';
 import PostService from '../API/PostService';
@@ -11,7 +11,7 @@ interface PostIdPageParams {
   id: string;
 }
 
-const PostIdPage = () => {
+const PostIdPage: FC = () => {
   const params = useParams<PostIdPageParams>();
   const [post, setPost] = useState<IPost | null>(null);
   const [comments, setComments] = useState<IComment[]>([]);

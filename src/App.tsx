@@ -3,9 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from './UI/navbar/Navbar';
 import AppRouter from './components/AppRouter';
 import { AuthContext } from './context';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-function App() {
+const App: FC = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -30,6 +30,6 @@ function App() {
       </BrowserRouter>
     </AuthContext.Provider>
   );
-}
+};
 
 export default App;

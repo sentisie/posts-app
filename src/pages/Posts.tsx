@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { usePosts } from '../hooks/usePosts';
 import { useFetching } from '../hooks/useFetching';
 import PostList from '../components/PostList';
@@ -14,7 +14,7 @@ import { useObserver } from '../hooks/useObserver';
 import MySelect from '../UI/select/MySelect';
 import { IPost } from '../types/types';
 
-function Posts() {
+const Posts: FC = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [filter, setFilter] = useState<{ sort: string; query: string }>({
     sort: '',
@@ -31,7 +31,7 @@ function Posts() {
     const response = await PostService.getAll(+limit, page);
     setPosts([...posts, ...response.data]);
     const totalCount = response.headers['x-total-count'];
-    setTotalPages(getPageCount(+totalCount, +limit)); // Преобразуем totalCount и limit в числа
+    setTotalPages(getPageCount(+totalCount, +limit));
   });
 
   useObserver(lastElement, page < totalPages, isPostsLoading, () => {
@@ -39,7 +39,7 @@ function Posts() {
   });
 
   useEffect(() => {
-    fetchPosts(+limit, page); // Преобразуем limit в число
+    fetchPosts(+limit, page);
   }, [page, limit]);
 
   const createPostHandler = (newPost: IPost): void => {
@@ -57,7 +57,6 @@ function Posts() {
 
   return (
     <div className="App">
-      {/*interactive-block*/}
       <section className="interactive-wrapper">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <PostFilter filter={filter} setFilter={setFilter} />
@@ -78,9 +77,7 @@ function Posts() {
           <PostForm onCreatePost={createPostHandler} />
         </MyModal>
       </section>
-      {/*display-posts*/}
       {postError && <h1>An error occurred {postError}</h1>}{' '}
-      {/* Исправим шаблонную строку */}
       <PostList
         remove={removePostHandler}
         posts={sortedAndSearchedPosts}
@@ -92,10 +89,9 @@ function Posts() {
           <Loader />
         </section>
       )}
-      {/*pagination-pages*/}
       <Pagination totalPages={totalPages} page={page} changePage={changePage} />
     </div>
   );
-}
+};
 
 export default Posts;

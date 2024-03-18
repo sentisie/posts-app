@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import MyInput from '../UI/input/MyInput';
 import MyButton from '../UI/button/MyButton';
 import { AuthContext } from '../context';
 
-const Login = () => {
+const Login: FC = () => {
   const { isAuth, setIsAuth } = useContext(AuthContext);
 
   const login = (event: React.FormEvent<HTMLFormElement>) => {
